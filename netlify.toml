@@ -9,9 +9,6 @@
     X-XSS-Protection = "1; mode=block"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "no-referer"
-    Feature-Policy = "accelerometer 'none'; camera 'none'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; payment 'none'; usb 'none'"
-    Strict-Transport-Security = "max-age=31536000; includeSubdomains;"
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com/*; img-src 'self' data; frame-ancestors 'self'; font-src 'self' https://fonts.gstatic.com/*"
 
 [[plugins]]
 package = "netlify-plugin-a11y"
