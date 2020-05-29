@@ -1,5 +1,7 @@
 # Memory Emoji
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/96e0e669-c33c-4127-b488-23cfe4d4c44e/deploy-status)](https://app.netlify.com/sites/memory-emoji/deploys)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
 ## Available Scripts
