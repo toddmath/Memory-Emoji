@@ -7,8 +7,6 @@ const Title = styled.h1`
   font-size: clamp(2.1rem, 3.5vw, 3.2rem);
   color: #c1d8e8;
   letter-spacing: 0.055em;
-  /* font-variation-settings: "opsz" 19.9989938964844, "GRAD" 421, "YAXS" 409; */
-  /* font-weight: 638; */
   font-weight: 500;
 `
 

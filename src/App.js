@@ -1,8 +1,10 @@
-import React from "react"
+import React, { memo } from "react"
 import { Board } from "./features/board/Board"
 
 function App() {
   return <Board />
 }
 
-export default App
+App.displayName = App
+
+export default memo(App)

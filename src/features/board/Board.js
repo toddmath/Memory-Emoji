@@ -1,20 +1,26 @@
 import React, { useState, useEffect } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import styled from "styled-components/macro"
-import { selectStatus, selectMoves } from "./boardSlice"
+import { selectStatus, selectMoves, resetBoard } from "./boardSlice"
 import { setupCards } from "./setupCards"
-import { Card } from "./components/Card"
+import Card from "./components/Card"
 import { Header } from "./components/Header"
-import { Stats } from "./components/Stats"
+import Stats from "./components/Stats"
 
 export function Board() {
   const [cards, setCards] = useState([])
   const status = useSelector(selectStatus)
   const moves = useSelector(selectMoves)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setCards(setupCards())
   }, [])
+
+  const handleReset = () => {
+    dispatch(resetBoard())
+    setCards(setupCards())
+  }
 
   return (
     <>
@@ -30,11 +36,25 @@ export function Board() {
         ))}
       </GameGrid>
       <StatContainer>
+        <Reset onClick={handleReset}>Reset Game</Reset>
         <Stats moves={moves} status={status} />
       </StatContainer>
     </>
   )
 }
+
+const Reset = styled.button`
+  background-color: rgba(255, 255, 255, 0.35);
+  border: none;
+  flex: 1 0 15%;
+  font-size: 1.1rem;
+  padding: 0 0.5em;
+  transition: background 200ms ease-in;
+  &:hover {
+    background-color: inherit;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+  }
+`
 
 const GameGrid = styled.main`
   display: grid;
@@ -50,6 +70,10 @@ const GameGrid = styled.main`
 const StatContainer = styled.footer`
   display: flex;
   width: 100%;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.125);
 `

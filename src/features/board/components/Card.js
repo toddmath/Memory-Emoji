@@ -1,21 +1,23 @@
-import React, { useEffect } from "react"
+import React, { useEffect, memo } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import styled, { css } from "styled-components/macro"
 import {
   flipCard,
   flipBack,
+  checkGame,
   selectFlipped,
   selectSolved,
   setStatus,
 } from "../boardSlice"
 
-export function Card({ id, content, codepoint }) {
+function Card({ id, content, codepoint }) {
   const solved = useSelector(selectSolved)
   const flipped = useSelector(selectFlipped)
   const dispatch = useDispatch()
 
   const handleClick = () => {
     dispatch(flipCard({ content, codepoint, id }))
+    dispatch(checkGame())
   }
 
   const isFlipped = flipped.findIndex(f => f.id === id)
@@ -33,7 +35,7 @@ export function Card({ id, content, codepoint }) {
     if (solved.length === 35) {
       dispatch(setStatus("victory"))
     }
-  })
+  }, [solved, dispatch])
 
   return (
     <CardContainer onClick={handleClick} $flipped={isFlipped !== -1}>
@@ -83,7 +85,6 @@ const Back = styled.div`
     justify-content: center;
     flex-direction: column;
     text-align: center;
-    font-weight: bold;
     height: 100%;
     font-size: clamp(34px, 4vw, 2.8rem);
     line-height: 1;
@@ -121,3 +122,5 @@ const CardContainer = styled.div`
       }
     `}
 `
+
+export default memo(Card)

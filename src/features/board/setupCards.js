@@ -35,10 +35,9 @@ function shuffle(cards) {
 }
 
 export function setupCards() {
-  const fromCP = String.fromCodePoint
   const cards = [...emojis].reduce((acc, codepoint) => {
-    acc.push({ id: nanoid(), content: fromCP(codepoint), codepoint })
-    acc.push({ id: nanoid(), content: fromCP(codepoint), codepoint })
+    acc.push({ id: nanoid(), content: String.fromCodePoint(codepoint), codepoint })
+    acc.push({ id: nanoid(), content: String.fromCodePoint(codepoint), codepoint })
     return acc
   }, [])
 
