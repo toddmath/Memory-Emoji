@@ -30,7 +30,7 @@ function shuffle(cards) {
     ;[input[randomIndex], input[i]] = [input[i], input[randomIndex]]
     i--
   }
-  console.log("shuffled cards", input)
+  // console.log("shuffled cards", input)
   return input
 }
 
