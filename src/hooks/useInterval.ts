@@ -1,7 +1,13 @@
 import { useEffect, useRef } from "react"
 
-export default function useInterval(callback, delay, dependencies = []) {
-  const savedCallback = useRef()
+type Noop = () => void
+
+export default function useInterval(
+  callback: Noop,
+  delay: number | null,
+  dependencies: any[] = []
+) {
+  const savedCallback = useRef<Noop | null>(null)
 
   // Remember the latest callback.
   useEffect(() => {
@@ -13,11 +19,14 @@ export default function useInterval(callback, delay, dependencies = []) {
   // Set up the interval.
   useEffect(() => {
     function tick() {
-      savedCallback.current()
+      if (savedCallback.current) {
+        savedCallback.current()
+      }
     }
     if (delay !== null) {
       let id = setInterval(tick, delay)
       return () => clearInterval(id)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
 }

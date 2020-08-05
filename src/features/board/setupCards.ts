@@ -1,5 +1,7 @@
 import { nanoid } from "nanoid"
 
+import type { Cards } from "./types"
+
 const emojis = [
   0x1f9a8,
   0x1f47e,
@@ -21,12 +23,22 @@ const emojis = [
   0x1f680,
 ]
 
-function shuffle(cards) {
+// function swap<T>(tuple: [T, T]): void {
+//   ;[tuple[0], tuple[1]] = [tuple[1], tuple[0]]
+// }
+
+// function rand() {
+//   return crypto.getRandomValues(new Uint32Array(1))[0] / 4294967295
+// }
+
+function shuffle(cards: Cards) {
   let input = cards
   let i = cards.length - 1
+  let randomIndex: number
 
   while (i >= 0) {
-    let randomIndex = ~~(Math.random() * (i + 1))
+    randomIndex = ~~(Math.random() * (i + 1))
+    // swap([input[randomIndex], input[i]])
     ;[input[randomIndex], input[i]] = [input[i], input[randomIndex]]
     i--
   }
@@ -35,13 +47,13 @@ function shuffle(cards) {
 }
 
 export function setupCards() {
-  const cards = [...emojis].reduce((acc, codepoint) => {
+  const cards: Cards = [...emojis].reduce((acc, codepoint) => {
     acc.push({ id: nanoid(), content: String.fromCodePoint(codepoint), codepoint })
     acc.push({ id: nanoid(), content: String.fromCodePoint(codepoint), codepoint })
     return acc
-  }, [])
+  }, [] as Cards)
 
-  return shuffle(cards)
+  return shuffle(shuffle(cards))
 }
 
 // const emojis = [

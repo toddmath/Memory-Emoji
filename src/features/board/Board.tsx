@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import React, { memo, useState, useEffect } from "react"
+import { useDispatch } from "react-redux"
 import styled from "styled-components/macro"
-import { selectStatus, selectMoves, resetBoard } from "./boardSlice"
+
+import { resetBoard } from "./boardSlice"
 import { setupCards } from "./setupCards"
 import Card from "./components/Card"
-import { Header } from "./components/Header"
 import Stats from "./components/Stats"
 
-export function Board() {
-  const [cards, setCards] = useState([])
-  const status = useSelector(selectStatus)
-  const moves = useSelector(selectMoves)
+import type { Cards } from "./types"
+
+export const Board = memo(function Board() {
+  const [cards, setCards] = useState<Cards>([])
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -24,7 +24,6 @@ export function Board() {
 
   return (
     <>
-      <Header />
       <GameGrid>
         {cards.map(item => (
           <Card
@@ -36,35 +35,45 @@ export function Board() {
         ))}
       </GameGrid>
       <StatContainer>
-        <Reset onClick={handleReset}>Reset Game</Reset>
-        <Stats moves={moves} status={status} />
+        <Reset onClick={handleReset}>Reset</Reset>
+        <Stats />
       </StatContainer>
     </>
   )
-}
+})
 
 const Reset = styled.button`
-  background-color: rgba(255, 255, 255, 0.35);
   border: none;
   flex: 1 0 15%;
-  font-size: 1.1rem;
+  /* font-size: 1.1rem; */
+  font-family: inherit;
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.031em;
+  font-style: normal;
+  line-height: 1;
   padding: 0 0.5em;
   transition: background 200ms ease-in;
+  background-color: inherit;
+  color: #ccc;
+  cursor: pointer;
+
   &:hover {
-    background-color: inherit;
-    border: 2px solid rgba(255, 255, 255, 0.35);
+    /* color: #000; */
+    background-color: rgba(0, 0, 0, 0.35);
+    /* background-color: rgba(255, 255, 255, 0.35); */
+    /* border: 2px solid rgba(255, 255, 255, 0.35); */
   }
 `
 
 const GameGrid = styled.main`
   display: grid;
   justify-content: center;
-  align-content: center;
-  width: 100%;
-  height: 100%;
+  place-items: center;
   grid-template-columns: repeat(6, 10vmin);
   grid-template-rows: repeat(6, 10vmin);
-  gap: 2.5vmin;
+  grid-gap: 2.5vmin;
 `
 
 const StatContainer = styled.footer`
