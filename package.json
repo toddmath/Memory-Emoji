@@ -18,7 +18,8 @@
     "uuid": "^8.1.0"
   },
   "resolutions": {
-    "lodash": "^4.17.19"
+    "lodash": "^4.17.19",
+    "elliptic": "^6.5.3"
   },
   "scripts": {
     "start": "react-scripts start",
