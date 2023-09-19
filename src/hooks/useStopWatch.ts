@@ -20,9 +20,7 @@ export default function useStopWatch(status: GameStatus) {
 
   useInterval(
     () => {
-      if (status === "running") {
-        handleStopWatch()
-      }
+      if (status === "running") handleStopWatch()
     },
     25,
     [status, handleStopWatch]
@@ -35,20 +33,18 @@ export default function useStopWatch(status: GameStatus) {
     }
   }, [status])
 
-  const doubleTail = useCallback((str: string) => str.slice(-2), [])
-  const formatTime = useCallback((n: number) => doubleTail(`0${String(n)}`), [
-    doubleTail,
-  ])
+  // const doubleTail = useCallback((str: string) => str.slice(-2), [])
+  // const formatTime = useCallback((n: number) => `0${String(n)}`.slice(-2), [])
 
   return useMemo(
     () =>
       ({
-        hours: formatTime(~~(stopWatch / 3600000)),
-        minutes: formatTime(~~((stopWatch / 60000) % 60)),
-        seconds: formatTime(~~((stopWatch / 1000) % 60)),
-        centiseconds: formatTime(~~((stopWatch / 10) % 100)),
+        hours: `0${~~(stopWatch / 3600000)}`.slice(-2),
+        minutes: `0${~~((stopWatch / 60000) % 60)}`.slice(-2),
+        seconds: `0${~~((stopWatch / 1000) % 60)}`.slice(-2),
+        centiseconds: `0${~~((stopWatch / 10) % 100)}`.slice(-2),
         lapse: stopWatch,
       } as const),
-    [stopWatch, formatTime]
+    [stopWatch]
   )
 }

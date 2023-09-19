@@ -1,29 +1,24 @@
 [build]
-  publish = "build/"
-  command = "yarn build"
+publish = "build/"
+command = "npm run build"
 
 [[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "no-referer"
+for = "/*"
+[headers.values]
+X-Frame-Options = "DENY"
+X-XSS-Protection = "1; mode=block"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "no-referer"
 
 [[plugins]]
 package = "netlify-plugin-a11y"
 
-  [plugins.inputs]
-  resultMode = "warn"
-
-[[plugins]]
-package = "netlify-plugin-is-website-vulnerable"
+[plugins.inputs]
+resultMode = "warn"
 
 [[plugins]]
 package = "@netlify/plugin-sitemap"
 
-  [plugins.inputs]
-  buildDir = "public"
+[plugins.inputs]
+buildDir = "public"
 
-[[plugins]]
-package = "netlify-plugin-subfont"

@@ -1,7 +1,7 @@
-import React, { useEffect, memo } from "react"
+import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import styled, { css } from "styled-components/macro"
-import { motion, Variants } from "framer-motion"
+import styled, { css } from "styled-components"
+import { AnimatePresence, motion, Variants } from "framer-motion"
 
 import {
   flipCard,
@@ -10,37 +10,17 @@ import {
   selectFlipped,
   selectSolved,
 } from "../boardSlice"
-// import { useStopWatch } from "context/stopwatch.context"
+
 import type { Card as ICard } from "../types"
-
-const springBack = {
-  type: "spring",
-  mass: 1,
-  stiffness: 250,
-  damping: 12,
-}
-
-const springForward = {
-  type: "spring",
-  mass: 1,
-  stiffness: 300,
-  damping: 20,
-}
 
 const frontVariants: Variants = {
   initial: {
     rotateY: 0,
     boxShadow: "0px 6px 21px -8px rgba(0, 0, 0, 0.81)",
-    transition: {
-      ...springBack,
-    },
   },
   flipped: {
     rotateY: -180,
     boxShadow: "0px 0px 12px 3px rgba(0, 0, 0, 0.3)",
-    transition: {
-      ...springForward,
-    },
   },
 }
 
@@ -48,46 +28,23 @@ const backVariants: Variants = {
   initial: {
     rotateY: 180,
     boxShadow: "0px 6px 21px -8px rgba(0, 0, 0, 0.81)",
-    transition: {
-      ...springBack,
-    },
   },
   flipped: {
     rotateY: 0,
     boxShadow: "0px 0px 12px 3px rgba(0, 0, 0, 0.3)",
-    transition: {
-      ...springForward,
-    },
   },
 }
 
 const parentVariants: Variants = {
-  initial: {
-    scale: 1,
-  },
-  hover: {
-    scale: 1.1,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 20,
-    },
-  },
-  flipped: {
-    scale: 1.05,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 15,
-    },
-  },
+  initial: { scale: 1, opacity: 1 },
+  hover: { scale: 1.1, opacity: 1 },
+  flipped: { scale: 1, opacity: 1 },
 }
 
-const Card = memo(function Card({ id, content, codepoint }: ICard) {
+function Card({ id, content, codepoint }: ICard) {
   const solved = useSelector(selectSolved)
   const flipped = useSelector(selectFlipped)
   const dispatch = useDispatch()
-  // const { isRunning, startWatch } = useStopWatch()
 
   const handleClick = () => {
     dispatch(flipCard({ content, codepoint, id }))
@@ -103,31 +60,37 @@ const Card = memo(function Card({ id, content, codepoint }: ICard) {
         dispatch(checkGame())
       }, 1000)
 
-      return () => clearTimeout(fbTimer)
+      return () => {
+        clearTimeout(fbTimer)
+      }
     }
   }, [flipped, solved, dispatch])
 
   return (
-    <CardContainer
-      variants={parentVariants}
-      initial='initial'
-      animate={isFlipped !== -1 ? "flipped" : "initial"}
-      whileHover='hover'
-      onClick={handleClick}
-      $flipped={isFlipped !== -1}
-    >
-      <Front variants={frontVariants} initial='initial' />
-      <Back variants={backVariants} initial='initial'>
-        <p>{content}</p>
-      </Back>
-    </CardContainer>
+    <AnimatePresence>
+      <CardContainer
+        layoutId={id}
+        key={content}
+        variants={parentVariants}
+        initial='initial'
+        animate={isFlipped !== -1 ? "flipped" : "initial"}
+        exit='initial'
+        whileHover='hover'
+        onClick={handleClick}
+        $flipped={isFlipped !== -1}
+      >
+        <CardFront variants={frontVariants} />
+        <CardBack variants={backVariants}>
+          <p>{content}</p>
+        </CardBack>
+      </CardContainer>
+    </AnimatePresence>
   )
-})
+}
 
 const facesStyles = css`
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   margin: 0;
   width: 100%;
   height: 100%;
@@ -140,19 +103,19 @@ const facesStyles = css`
   border-radius: 0.5em;
 `
 
-const Front = styled(motion.div)`
+const CardFront = styled(motion.div)`
   display: block;
   ${facesStyles};
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.4);
 `
 
-const Back = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.35);
+const CardBack = styled(motion.div)`
+  background: rgba(255, 255, 255, 0.6);
   user-select: none;
   display: grid;
   place-items: center;
 
-  p {
+  & > p {
     user-select: none;
     margin: 0;
     padding: 0;
@@ -160,11 +123,12 @@ const Back = styled(motion.div)`
     font-size: clamp(34px, 4vw, 2.8rem);
     line-height: 1;
   }
-
   ${facesStyles};
 `
 
 const CardContainer = styled(motion.div)<{ $flipped: boolean }>`
+  isolation: isolate;
+  overflow: hidden;
   aspect-ratio: 1 / 1;
   background: transparent;
   min-width: 100%;
@@ -173,7 +137,7 @@ const CardContainer = styled(motion.div)<{ $flipped: boolean }>`
   position: relative;
   border-radius: 0.5em;
   cursor: pointer;
-  pointer-events: ${props => (props.$flipped === true ? "none" : "auto")};
+  pointer-events: ${({ $flipped }) => ($flipped ? "none" : "auto")};
 `
 
 export default Card

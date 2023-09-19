@@ -1,5 +1,4 @@
-import React from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 import App from "./App"
 import store from "./app/store"
 import { Provider } from "react-redux"
@@ -7,16 +6,15 @@ import { GlobalStyle } from "styles/globalStyle"
 import * as serviceWorker from "./serviceWorker"
 import "./index.css"
 
-const rootElem = document.getElementById("root")!
+const rootElem = document.getElementById("root")
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <GlobalStyle />
-      <App />
-    </Provider>
-  </React.StrictMode>,
-  rootElem
+const root = createRoot(rootElem!)
+
+root.render(
+  <Provider store={store}>
+    <GlobalStyle />
+    <App />
+  </Provider>
 )
 
 // If you want your app to work offline and load faster, you can change

@@ -1,6 +1,6 @@
-import React, { memo, useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { useDispatch } from "react-redux"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 
 import { resetBoard } from "./boardSlice"
 import { setupCards } from "./setupCards"
@@ -8,8 +8,9 @@ import Card from "./components/Card"
 import Stats from "./components/Stats"
 
 import type { Cards } from "./types"
+import { motion } from "framer-motion"
 
-export const Board = memo(function Board() {
+export function Board() {
   const [cards, setCards] = useState<Cards>([])
   const dispatch = useDispatch()
 
@@ -24,7 +25,7 @@ export const Board = memo(function Board() {
 
   return (
     <>
-      <GameGrid>
+      <GameGrid layout>
         {cards.map(item => (
           <Card
             key={item.id}
@@ -34,18 +35,18 @@ export const Board = memo(function Board() {
           />
         ))}
       </GameGrid>
+
       <StatContainer>
         <Reset onClick={handleReset}>Reset</Reset>
         <Stats />
       </StatContainer>
     </>
   )
-})
+}
 
 const Reset = styled.button`
   border: none;
   flex: 1 0 15%;
-  /* font-size: 1.1rem; */
   font-family: inherit;
   font-size: clamp(1.3rem, 3vw, 1.7rem);
   font-weight: 300;
@@ -60,14 +61,11 @@ const Reset = styled.button`
   cursor: pointer;
 
   &:hover {
-    /* color: #000; */
     background-color: rgba(0, 0, 0, 0.35);
-    /* background-color: rgba(255, 255, 255, 0.35); */
-    /* border: 2px solid rgba(255, 255, 255, 0.35); */
   }
 `
 
-const GameGrid = styled.main`
+const GameGrid = styled(motion.main)`
   display: grid;
   justify-content: center;
   place-items: center;

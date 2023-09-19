@@ -5,7 +5,7 @@ type Noop = () => void
 export default function useInterval(
   callback: Noop,
   delay: number | null,
-  dependencies: any[] = []
+  dependencies: React.DependencyList = []
 ) {
   const savedCallback = useRef<Noop | null>(null)
 
@@ -19,9 +19,7 @@ export default function useInterval(
   // Set up the interval.
   useEffect(() => {
     function tick() {
-      if (savedCallback.current) {
-        savedCallback.current()
-      }
+      if (savedCallback.current) savedCallback.current()
     }
     if (delay !== null) {
       let id = setInterval(tick, delay)

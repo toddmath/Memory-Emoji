@@ -1,10 +1,8 @@
-import React, { memo } from "react"
 import { useSelector } from "react-redux"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 
 import { useStopWatch } from "hooks"
 import { selectMoves, selectStatus } from "../boardSlice"
-// import Clock from "./Clock"
 
 const StatContainer = styled.div`
   display: grid;
@@ -21,9 +19,7 @@ const StatContainer = styled.div`
   h2 {
     padding: 0;
     margin: 0;
-    /* border-radius: 5px; */
     font-size: inherit;
-    /* font-size: clamp(1.3rem, 3vw, 1.7rem); */
     text-transform: uppercase;
     font-weight: 300;
     letter-spacing: 0.031em;
@@ -36,39 +32,23 @@ const StopWatch = styled.div`
   display: grid;
   grid-template-columns: auto auto auto auto;
   grid-template-rows: auto;
-  /* column-gap: 5px; */
-  /* font-size: clamp(1.3rem, 3vw, 1.7rem); */
   font-size: inherit;
   place-items: center;
   padding: 0;
   line-height: 1;
 
   & > span {
-    /* display: block; */
-    /* padding: 5px; */
     text-align: center;
     width: 3ch;
     vertical-align: middle;
   }
 
-  & > span:last-of-type {
+  & > .centiseconds {
     width: 2ch;
   }
 `
 
-// const ClockWrapper = styled.div`
-//   position: relative;
-//   display: block;
-//   width: 100%;
-//   height: 100%;
-
-//   /* circle.circle {
-//     width: 100%;
-//     height: 100%;
-//   } */
-// `
-
-const Stats = memo(function Stats() {
+export default function Stats() {
   const status = useSelector(selectStatus)
   const { hours, minutes, seconds, centiseconds } = useStopWatch(status)
   const moves = useSelector(selectMoves)
@@ -86,12 +66,4 @@ const Stats = memo(function Stats() {
       </StopWatch>
     </StatContainer>
   )
-})
-
-export default Stats
-
-/*
-<h2 className='seconds'>
-  seconds: <span>{time}</span>
-</h2>
-*/
+}

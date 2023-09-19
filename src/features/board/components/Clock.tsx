@@ -1,51 +1,38 @@
-import React from "react"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 
 interface Props {
   tick: number
   circle?: boolean
 }
 
-/* <circle className='circle' cx='125' cy='125' r='120' /> */
-
-const Clock = ({ tick, circle = true }: Props) => {
-  // const degrees = (tick / 1000 / 60) * 360
-  // const degrees = tick * 360
-  // const degrees = ~~((tick / 10) / 100) / 360
-  // const degrees = (tick / 100 / 60) * 360
-  const degrees = (tick / 1000) * 360
-
-  return (
-    <Svg viewBox='0 0 100 100'>
-      {circle === true ? (
-        <circle className='circle' cx='50%' cy='20' r='15' />
-      ) : (
-        <React.Fragment>
-          <ellipse
-            cx='50'
-            cy='50'
-            rx='48'
-            ry='48'
-            fill='none'
-            stroke='black'
-            strokeWidth='1'
-          />
-          <Line
-            style={{
-              transform: `rotate(${degrees}deg)`,
-            }}
-            y1='50'
-            y2='4'
-            x1='50'
-            x2='50'
-            stroke='red'
-            strokeWidth='1'
-          />
-        </React.Fragment>
-      )}
-    </Svg>
-  )
-}
+const Clock = ({ tick, circle = true }: Props) => (
+  <Svg viewBox='0 0 100 100'>
+    {circle === true ? (
+      <circle className='circle' cx='50%' cy='20' r='15' />
+    ) : (
+      <>
+        <ellipse
+          cx='50'
+          cy='50'
+          rx='48'
+          ry='48'
+          fill='none'
+          stroke='black'
+          strokeWidth='1'
+        />
+        <Line
+          $rotate={(tick / 1000) * 360}
+          y1='50'
+          y2='4'
+          x1='50'
+          x2='50'
+          stroke='red'
+          strokeWidth='1'
+        />
+      </>
+    )}
+  </Svg>
+)
 
 const Svg = styled.svg`
   position: absolute;
@@ -63,9 +50,10 @@ const Svg = styled.svg`
   }
 `
 
-const Line = styled.line`
+const Line = styled.line<{ $rotate: number }>`
   transition: transform 200ms ease;
   transform-origin: 50px 50px;
+  transform: rotate(${({ $rotate }) => $rotate}) deg;
 `
 
 export default Clock

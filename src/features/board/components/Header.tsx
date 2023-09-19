@@ -1,5 +1,4 @@
-import React from "react"
-import styled from "styled-components/macro"
+import styled from "styled-components"
 
 const Title = styled.h1`
   margin: 0;
@@ -19,10 +18,8 @@ const StyledHeader = styled.header`
   margin-bottom: 2vh;
 `
 
-export function Header() {
-  return (
-    <StyledHeader>
-      <Title>Emoji Memory</Title>
-    </StyledHeader>
-  )
-}
+export const Header = () => (
+  <StyledHeader>
+    <Title>Emoji Memory</Title>
+  </StyledHeader>
+)
